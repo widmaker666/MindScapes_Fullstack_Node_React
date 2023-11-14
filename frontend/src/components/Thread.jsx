@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Post from "./Post";
 
 function Thread({ userId }) {
   const [data, setData] = useState([]);
@@ -11,7 +12,10 @@ function Thread({ userId }) {
   return (
     <>
       <div className="thread-container">
-        {data && data.map((post) => <li>{post.message}</li>)}
+        {data &&
+          data
+            .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+            .map((post) => <Post key={post._id} userId={userId} post={post} />)}
       </div>
     </>
   );
