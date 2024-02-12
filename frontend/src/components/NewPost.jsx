@@ -1,18 +1,27 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost, getPosts } from "../feature/post.slice";
 
-function NewPost({ userId }) {
+function NewPost() {
   const [message, setMessage] = useState("");
+  const userId = useSelector((state) => state.user.userId);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const data = {
+      message,
+      author: userId,
+      _id: Date.now(),
+    };
     try {
-      axios.post("http://localhost:5000/post/", {
-        message,
-        author: userId,
+      axios.post("http://localhost:5000/post/", data).then(() => {
+        dispatch(createPost(data));
+        dispatch(getPosts());
       });
       setMessage("");
-      console.log("post sent");
     } catch (error) {
       console.log(error);
     }

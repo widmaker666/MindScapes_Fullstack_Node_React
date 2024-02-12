@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewPost from "./components/NewPost";
 import Thread from "./components/Thread";
+import { useDispatch } from "react-redux";
+import { getUser } from "./feature/user.slice";
 
 function App() {
   const [userId, setUserId] = useState("");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUser(userId));
+  }, [userId]);
 
   const handleChange = (e) => {
     setUserId(e.target.value);
@@ -21,8 +28,8 @@ function App() {
             onChange={handleChange}
           />
         </div>
-        <NewPost userId={userId} />
-        <Thread userId={userId} />       
+        <NewPost />
+        <Thread />
       </div>
     </>
   );
